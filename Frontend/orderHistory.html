@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History | Stitch-It-Up</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: linear-gradient(to right, #e0f7ff, #f3fbff);
+            color: #003566;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome {
+            font-size: 24px;
+            color: #1e40af;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1d4ed8;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #dbeafe;
+            color: white;
+        }
+
+        .orders-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .order-number {
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        .order-date {
+            color: #64748b;
+        }
+
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-processing {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-delivered {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-cancelled {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+
+        .track-button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .track-button:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="welcome" id="welcomeMessage">Welcome, User</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="customize.html">Customize</a>
+                <a href="mm.html">Measurement</a>
+                <a href="#" id="logoutLink">Logout</a>
+            </div>
+        </div>
+
+        <div class="orders-container">
+            <h2>Your Orders</h2>
+            <div id="ordersList">
+                <!-- Orders will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const userId = localStorage.getItem('userId');
+        const userName = localStorage.getItem('userName');
+
+        if (!isLoggedIn || !userId) {
+            window.location.href = 'login.html?redirect=orderHistory.html';
+        }
+
+        // Set welcome message
+        document.getElementById('welcomeMessage').textContent = `Welcome, ${userName}`;
+
+        // Handle logout
+        document.getElementById('logoutLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        });
+
+        // Format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // Get status class
+        function getStatusClass(status) {
+            switch (status.toLowerCase()) {
+                case 'pending':
+                    return 'status-pending';
+                case 'processing':
+                    return 'status-processing';
+                case 'delivered':
+                    return 'status-delivered';
+                case 'cancelled':
+                    return 'status-cancelled';
+                default:
+                    return '';
+            }
+        }
+
+        // Fetch and display orders
+        async function fetchOrders() {
+            try {
+                const response = await fetch(`/api/orders/user/${userId}`);
+                const orders = await response.json();
+
+                const ordersList = document.getElementById('ordersList');
+
+                if (orders.length === 0) {
+                    ordersList.innerHTML = `
+                        <div class="no-orders">
+                            <h3>No orders found</h3>
+                            <p>Start by creating a new order!</p>
+                            <a href="customize.html" class="track-button">Create Order</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                ordersList.innerHTML = orders.map(order => `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span class="order-number">Order #${order.order_number}</span>
+                            <span class="order-date">${formatDate(order.created_at)}</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Category</span>
+                                <span class="detail-value">${order.category}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Subcategory</span>
+                                <span class="detail-value">${order.subcategory}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Fabric</span>
+                                <span class="detail-value">${order.fabric}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Color</span>
+                                <span class="detail-value">${order.preferred_color}</span>
+                            </div>
+                        </div>
+                        <div class="order-footer">
+                            <span class="order-status ${getStatusClass(order.status)}">${order.status}</span>
+                            <a href="track.html?order=${order.order_number}" class="track-button">Track Order</a>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+                document.getElementById('ordersList').innerHTML = `
+                    <div class="no-orders">
+                        <h3>Error loading orders</h3>
+                        <p>Please try again later</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Fetch orders when page loads
+        fetchOrders();
+    </script>
+</body>
+</html> 

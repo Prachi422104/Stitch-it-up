@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Stitch-It-Up</title>
+    <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #d0e7ff, #e3f0ff, #f0f8ff);
+      color: #1f3b57;
+      height: 100vh;
+      overflow-x: hidden;
+    }
+
+        nav {
+            background-color: rgba(208, 235, 255, 0.85);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            backdrop-filter: blur(6px);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1d4ed8;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #dbeafe;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .profile-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .info-item h3 {
+            margin: 0 0 10px 0;
+            color: #1e40af;
+        }
+
+        .info-item p {
+            margin: 0;
+            color: #374151;
+        }
+
+        .orders-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .orders-table th, .orders-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .orders-table th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-pending { background-color: #fef3c7; color: #92400e; }
+        .status-processing { background-color: #dbeafe; color: #1e40af; }
+        .status-production { background-color: #e0e7ff; color: #3730a3; }
+        .status-ready { background-color: #dcfce7; color: #166534; }
+        .status-delivered { background-color: #f0fdf4; color: #166534; }
+        .status-cancelled { background-color: #fee2e2; color: #991b1b; }
+        .status-denied { background-color: #fee2e2; color: #991b1b; }
+
+        /* Delete Account Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            color: #1e40af;
+            margin: 0;
+        }
+
+        .close {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #6b7280;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+
+        .delete-account-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .delete-account-btn {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .delete-account-btn:hover {
+            background-color: #fecaca;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Stitch-It-Up</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="customize.html">Customize</a>
+            <a href="mm.html">Measurement</a>
+            <a href="track.html">Track Order</a>
+            <a href="userProfile.html" id="profileLink">My Profile</a>
+            <a href="#" id="logoutLink">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-section">
+            <div class="profile-header">
+                <h1>My Profile</h1>
+            </div>
+            <div class="profile-info" id="userInfo">
+                <!-- User info will be populated here -->
+            </div>
+            <div class="delete-account-section">
+                <button class="delete-account-btn" onclick="openDeleteModal()">Delete Account</button>
+            </div>
+        </div>
+
+        <div class="orders-section">
+            <h2>My Orders</h2>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Order Date</th>
+                        <th>Est. Delivery</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <!-- Orders will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Delete Account</h2>
+                <span class="close" onclick="closeDeleteModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                <p>All your orders and personal information will be permanently deleted.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn btn-danger" onclick="deleteAccount()">Delete Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const userId = localStorage.getItem('userId');
+        
+        if (!isLoggedIn || !userId) {
+            window.location.href = 'login.html';
+        }
+
+        // Function to format date
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // Function to get status class
+        function getStatusClass(status) {
+            return `status-${status.toLowerCase().replace(/\s+/g, '-')}`;
+        }
+
+        // Function to fetch user details
+        async function fetchUserDetails() {
+            try {
+                const response = await fetch(`/api/users/${userId}`);
+                const user = await response.json();
+
+                const userInfoDiv = document.getElementById('userInfo');
+                userInfoDiv.innerHTML = `
+                    <div class="info-item">
+                        <h3>Personal Information</h3>
+                        <p><strong>Name:</strong> ${user.fullName}</p>
+                        <p><strong>Email:</strong> ${user.email}</p>
+                        <p><strong>Mobile:</strong> ${user.mobile}</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Account Details</h3>
+                        <p><strong>Member Since:</strong> ${formatDate(user.createdAt)}</p>
+                        <p><strong>Total Orders:</strong> ${user.totalOrders || 0}</p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching user details:', error);
+            }
+        }
+
+        // Function to fetch user's orders
+        async function fetchUserOrders() {
+            try {
+                const response = await fetch(`/api/orders/user/${userId}`);
+                const orders = await response.json();
+
+                const tableBody = document.getElementById('ordersTableBody');
+                tableBody.innerHTML = orders.map(order => `
+                    <tr>
+                        <td>${order.order_number}</td>
+                        <td>${order.category}</td>
+                        <td><span class="status-badge ${getStatusClass(order.status)}">${order.status}</span></td>
+                        <td>${formatDate(order.created_at)}</td>
+                        <td>${formatDate(order.estimated_delivery_date)}</td>
+                        <td>
+                            <a href="track.html?order=${order.order_number}" class="action-btn btn-update">Track</a>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+            }
+        }
+
+        // Handle logout
+        document.getElementById('logoutLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        });
+
+        // Delete Account Modal Functions
+        function openDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        // Delete Account Function
+        async function deleteAccount() {
+            try {
+                const response = await fetch(`/api/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                } else {
+                    throw new Error('Failed to delete account');
+                }
+            } catch (error) {
+                console.error('Error deleting account:', error);
+                alert('Failed to delete account. Please try again.');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('deleteModal');
+            if (event.target === modal) {
+                closeDeleteModal();
+            }
+        }
+
+        // Initialize page
+        fetchUserDetails();
+        fetchUserOrders();
+    </script>
+</body>
+</html> 

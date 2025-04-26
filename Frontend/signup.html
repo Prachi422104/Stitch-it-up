@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up | Stitch-It-Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom, #e0f7ff, #cce7ff);
+      color: #003566;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      background-color: #bde0fe;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #0077b6;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #1d4ed8;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: #dbeafe;
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+
+    .signup-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .signup-box {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .signup-box h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #0077b6;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #1e293b;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #0077b6;
+      box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
+    }
+
+    .btn-signup {
+      width: 100%;
+      padding: 14px;
+      background-color: #0077b6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-signup:hover {
+      background-color: #005b8c;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .login-link a {
+      color: #0077b6;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: #dc3545;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .signup-box {
+        padding: 30px 20px;
+      }
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .checkbox-label span {
+      color: #1e293b;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">Stitch-It-Up</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="customize.html">Customize</a>
+      <a href="mm.html">Measurement</a>
+      <a href="track.html">Track Order</a>
+      <a href="login.html">Login</a>
+    </div>
+  </header>
+
+  <!-- Sign Up Form -->
+  <div class="signup-container">
+    <div class="signup-box">
+      <h2>Create Your Account</h2>
+      <form id="signupForm">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="mobile">Mobile Number</label>
+          <input type="tel" id="mobile" pattern="[0-9]{10}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" required>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="isAdmin">
+            <span>Register as Admin</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-signup">Sign Up</button>
+        <div class="error-message" id="errorMessage"></div>
+      </form>
+
+      <div class="login-link">
+        Already have an account? <a href="login.html">Login here</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById('fullName').value;
+      const email = document.getElementById('email').value;
+      const mobile = document.getElementById('mobile').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const isAdmin = document.getElementById('isAdmin').checked;
+      const errorMessage = document.getElementById('errorMessage');
+      const submitButton = document.querySelector('.btn-signup');
+
+      // Reset error message
+      errorMessage.style.display = 'none';
+
+      // Validate passwords match
+      if (password !== confirmPassword) {
+        errorMessage.textContent = 'Passwords do not match';
+        errorMessage.style.display = 'block';
+        return;
+      }
+
+      // Validate password strength
+      if (password.length < 8) {
+        errorMessage.textContent = 'Password must be at least 8 characters long';
+        errorMessage.style.display = 'block';
+        return;
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        errorMessage.textContent = 'Please enter a valid email address';
+        errorMessage.style.display = 'block';
+        return;
+      }
+
+      // Validate mobile number
+      const mobileRegex = /^[0-9]{10}$/;
+      if (!mobileRegex.test(mobile)) {
+        errorMessage.textContent = 'Please enter a valid 10-digit mobile number';
+        errorMessage.style.display = 'block';
+        return;
+      }
+
+      try {
+        // Disable submit button and show loading state
+        submitButton.disabled = true;
+        submitButton.textContent = 'Creating Account...';
+
+        // Send user data to server
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fullName,
+            email,
+            mobile,
+            password,
+            isAdmin
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Show success message
+          errorMessage.style.color = '#28a745';
+          errorMessage.textContent = 'Account created successfully! Redirecting...';
+          errorMessage.style.display = 'block';
+          
+          // Store user information in localStorage
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('userId', data.user.id);
+          localStorage.setItem('userName', data.user.fullName);
+          localStorage.setItem('userEmail', data.user.email);
+          localStorage.setItem('isAdmin', data.user.isAdmin);
+
+          // Redirect based on admin status
+          setTimeout(() => {
+            if (data.user.isAdmin) {
+              window.location.href = 'admin.html';
+            } else {
+              window.location.href = 'index.html';
+            }
+          }, 1500);
+        } else {
+          // Show error message from server
+          errorMessage.textContent = data.message || 'Signup failed. Please try again.';
+          errorMessage.style.display = 'block';
+          submitButton.disabled = false;
+          submitButton.textContent = 'Sign Up';
+        }
+      } catch (error) {
+        console.error('Signup error:', error);
+        errorMessage.textContent = 'Unable to connect to server. Please try again later.';
+        errorMessage.style.display = 'block';
+        submitButton.disabled = false;
+        submitButton.textContent = 'Sign Up';
+      }
+    });
+  </script>
+
+</body>
+</html>

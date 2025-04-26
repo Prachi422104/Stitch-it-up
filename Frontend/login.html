@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | Stitch-It-Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles/shared.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #d0e7ff, #e3f0ff, #f0f8ff);
+      color: #1f3b57;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      flex: 1;
+    }
+
+    .welcome-back {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #1e40af;
+      font-size: 1.2rem;
+    }
+
+    .welcome-back h2 {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .welcome-back p {
+      margin: 10px 0 0;
+      color: #475569;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1e40af;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #374151;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #dbeafe;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .error {
+      color: #ef4444;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .switch-form {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .switch-form a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .switch-form a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: #e0f2ff;
+      padding: 20px;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    footer p {
+      color: #475569;
+      margin: 0;
+    }
+
+    footer a {
+      color: #2563eb;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">Stitch-It-Up</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="customize.html">Customize</a>
+      <a href="mm.html">Measurement</a>
+      <a href="track.html">Track Order</a>
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="userProfile.html" id="profileLink" style="display: none;">My Profile</a>
+      <a href="admin.html" id="adminLink" style="display: none;">Admin Dashboard</a>
+      <a href="#" id="logoutLink" style="display: none;">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="welcome-back">
+      <h2>Welcome Back!</h2>
+      <p>We're glad to see you again. Please login to continue.</p>
+    </div>
+    <h1>Login</h1>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required>
+      </div>
+      <button type="submit">Login</button>
+      <div id="error" class="error"></div>
+    </form>
+    <div class="switch-form">
+      Don't have an account? <a href="signup.html">Sign up</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Stitch-It-Up. All rights reserved.</p>
+    <div>
+      <a href="#">Privacy</a> |
+      <a href="#">Terms</a> |
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    // Check login status and update navigation
+    function updateNavigation() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      const profileLink = document.getElementById('profileLink');
+      const adminLink = document.getElementById('adminLink');
+      const loginLink = document.getElementById('loginLink');
+      const logoutLink = document.getElementById('logoutLink');
+
+      if (isLoggedIn) {
+        profileLink.style.display = 'block';
+        if (isAdmin) {
+          adminLink.style.display = 'block';
+        }
+        loginLink.style.display = 'none';
+        logoutLink.style.display = 'block';
+      } else {
+        profileLink.style.display = 'none';
+        adminLink.style.display = 'none';
+        loginLink.style.display = 'block';
+        logoutLink.style.display = 'none';
+      }
+    }
+
+    // Handle logout
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    // Initialize navigation
+    updateNavigation();
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorElement = document.getElementById('error');
+
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Store user information
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('userId', data.user.id);
+          localStorage.setItem('isAdmin', data.user.isAdmin);
+          localStorage.setItem('userName', data.user.fullName);
+          localStorage.setItem('userEmail', data.user.email);
+
+          // Redirect based on user role
+          if (data.user.isAdmin) {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+        } else {
+          errorElement.textContent = data.message || 'Login failed. Please check your credentials.';
+          errorElement.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        errorElement.textContent = 'An error occurred during login. Please try again.';
+        errorElement.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

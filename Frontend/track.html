@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stitch-It-Up | Order Tracking</title>
+    <style>
+       body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7ff, #f3fbff);
+      background-image: url('background.jpg'); /* Add your background image */
+      background-size: cover; /* Ensures the image covers the entire background */
+      background-repeat: no-repeat; /* Prevents the image from repeating */
+      background-attachment: fixed; /* Keeps the background fixed during scrolling */
+      background-position: center; /* Centers the background image */
+    }
+        header {
+      background-color: #bde0fe;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #0077b6;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #1d4ed8;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: #dbeafe;
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #0077b6;
+        }
+
+        .tracking-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .order-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #0077b6;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .order-number {
+            font-size: 1.5rem;
+            color: #0077b6;
+            margin-bottom: 10px;
+        }
+
+        .order-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .tracking-timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #0077b6;
+            position: absolute;
+            left: -12px;
+            top: 0;
+        }
+
+        .timeline-content {
+            margin-left: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            color: #0077b6;
+            margin-bottom: 5px;
+        }
+
+        .timeline-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .timeline-description {
+            margin-top: 5px;
+            color: #333;
+        }
+
+        .order-details {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-label {
+            color: #666;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            color: #0077b6;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-shipped {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .contact-support {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .support-link {
+            color: #0077b6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .support-link:hover {
+            text-decoration: underline;
+        }
+
+        .track-order-form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            margin: 40px auto;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1e293b;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0077b6;
+            box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
+            background: white;
+        }
+
+        .btn-track {
+            width: 100%;
+            padding: 14px;
+            background-color: #0077b6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-track:hover {
+            background-color: #005b8c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 119, 182, 0.2);
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+            font-size: 0.9rem;
+            padding: 8px;
+            background: #fff3f3;
+            border-radius: 6px;
+        }
+
+        .tracking-container {
+            display: none;
+        }
+
+        .tracking-container.active {
+            display: block;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 40px 0 20px;
+            color: #0077b6;
+            position: relative;
+            z-index: 1;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Stitch-It-Up</div>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="customize.html">Customize</a>
+          <a href="mm.html">Measurement</a>
+          <a href="track.html">Track Order</a>
+          <a href="login.html">Login</a>
+        </div>
+      </header>
+
+    <h1>Track Your Order</h1>
+
+    <div class="track-order-form">
+        <form id="trackOrderForm">
+            <div class="form-group">
+                <label for="orderNumber">Enter Order Number</label>
+                <input type="text" id="orderNumber" placeholder="e.g. ORD123456" required>
+            </div>
+            <button type="submit" class="btn-track">Track Order</button>
+            <div class="error-message" id="errorMessage">Order not found. Please check your order number.</div>
+        </form>
+    </div>
+
+    <div class="tracking-container" id="trackingContainer">
+        <div class="order-header">
+            <div class="order-number" id="orderNumber"></div>
+            <div class="order-date" id="orderDate"></div>
+        </div>
+
+        <div class="tracking-timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Order Placed</div>
+                    <div class="timeline-date" id="orderPlacedDate"></div>
+                    <div class="timeline-description">Your order has been received and is being processed.</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Payment Confirmed</div>
+                    <div class="timeline-date" id="paymentDate"></div>
+                    <div class="timeline-description">Payment has been successfully processed.</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">In Production</div>
+                    <div class="timeline-date" id="productionDate"></div>
+                    <div class="timeline-description">Your custom outfit is being crafted with care.</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Shipped</div>
+                    <div class="timeline-date" id="shippedDate"></div>
+                    <div class="timeline-description">Your order is on its way to you.</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Delivered</div>
+                    <div class="timeline-date" id="deliveredDate"></div>
+                    <div class="timeline-description">Your order has been delivered.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-details">
+            <div class="detail-item">
+                <span class="detail-label">Current Status:</span>
+                <span class="detail-value" id="currentStatus"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Estimated Delivery:</span>
+                <span class="detail-value" id="estimatedDelivery"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Shipping Address:</span>
+                <span class="detail-value" id="shippingAddress"></span>
+            </div>
+        </div>
+
+        <div class="contact-support">
+            <p>Need help with your order?</p>
+            <a href="#" class="support-link">Contact Customer Support</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('trackOrderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const orderNumber = document.getElementById('orderNumber').value;
+            const trackingContainer = document.getElementById('trackingContainer');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            try {
+                // Fetch order details from database
+                const response = await fetch(`/api/orders/${orderNumber}`);
+                
+                if (!response.ok) {
+                    throw new Error('Order not found');
+                }
+                
+                const orderDetails = await response.json();
+                
+                // Hide error message and show tracking container
+                errorMessage.style.display = 'none';
+                trackingContainer.classList.add('active');
+                
+                // Display order number
+                document.getElementById('orderNumber').textContent = `Order #${orderNumber}`;
+                
+                // Display order date
+                const orderDate = new Date(orderDetails.createdAt);
+                document.getElementById('orderDate').textContent = orderDate.toLocaleString();
+                document.getElementById('orderPlacedDate').textContent = orderDate.toLocaleString();
+                
+                // Display payment date if available
+                if (orderDetails.paymentDate) {
+                    const paymentDate = new Date(orderDetails.paymentDate);
+                    document.getElementById('paymentDate').textContent = paymentDate.toLocaleString();
+                }
+                
+                // Display shipping address if available
+                if (orderDetails.shippingAddress) {
+                    document.getElementById('shippingAddress').textContent = orderDetails.shippingAddress;
+                }
+                
+                // Calculate estimated delivery (7 days from order date)
+                const estimatedDelivery = new Date(orderDate);
+                estimatedDelivery.setDate(estimatedDelivery.getDate() + 7);
+                document.getElementById('estimatedDelivery').textContent = estimatedDelivery.toLocaleDateString();
+                
+                // Update status based on order details
+                const status = orderDetails.status || 'Processing';
+                document.getElementById('currentStatus').textContent = status;
+                
+                // Update timeline based on status
+                updateTimeline(status);
+            } catch (error) {
+                // Show error message and hide tracking container
+                errorMessage.style.display = 'block';
+                trackingContainer.classList.remove('active');
+            }
+        });
+
+        function updateTimeline(status) {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach((item, index) => {
+                if (index < getStatusIndex(status)) {
+                    item.classList.add('completed');
+                } else if (index === getStatusIndex(status)) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        function getStatusIndex(status) {
+            const statuses = ['Order Placed', 'Payment Confirmed', 'In Production', 'Shipped', 'Delivered'];
+            return statuses.indexOf(status);
+        }
+    </script>
+</body>
+</html>

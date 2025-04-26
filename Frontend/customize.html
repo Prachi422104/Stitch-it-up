@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Customize Outfit | Stitch-It-Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7ff, #f3fbff);
+      background-image: url('bb3.jpg'); /* Add your background image */
+      background-size: cover; /* Ensures the image covers the entire background */
+      background-repeat: no-repeat; /* Prevents the image from repeating */
+      background-attachment: fixed; /* Keeps the background fixed during scrolling */
+      background-position: center; /* Centers the background image */
+    }
+
+    nav {
+      background-color: rgba(208, 235, 255, 0.85);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      backdrop-filter: blur(6px);
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #1e40af;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #1d4ed8;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: #dbeafe;
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin: 40px 0 20px;
+      color: #0077b6;
+      position: relative;
+      z-index: 1;
+      padding: 15px 30px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .customize-container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 8px;
+      display: block;
+      color: #2563eb;
+    }
+
+    select, input[type="file"], input[type="text"], textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 24px;
+      border: 1px solid #dbeafe;
+      border-radius: 10px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    select:focus, input:focus, textarea:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #2563eb;
+      color: white;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    .preview {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .preview img {
+      max-width: 200px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+
+    /* Add notification styles */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: none;
+      z-index: 1000;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .notification.show {
+      display: block;
+    }
+
+    .order-number {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin: 5px 0;
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 5px 10px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">Stitch-It-Up</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="customize.html">Customize</a>
+      <a href="mm.html">Measurement</a>
+      <a href="track.html">Track Order</a>
+      <a href="login.html">Login</a>
+    </div>
+  </nav>
+
+  <!-- Customization Form -->
+  <h1>Customize Your Outfit</h1>u 
+
+  <div class="customize-container">
+    <form id="customForm">
+      <label for="category">Choose Outfit Category</label>
+      <select id="category" name="category" onchange="updateSubcategories()">
+        <option value="">-- Select Category --</option>
+        <option value="Kurti">Kurti</option>
+        <option value="Lehenga">Lehenga</option>
+        <option value="Pants">Pants</option>
+        <option value="Skirt">Skirt</option>
+        <option value="Shirt">Shirt</option>
+        <option value="Blouse">Blouse</option>
+      </select>
+
+      <label for="subcategory">Select Type</label>
+      <select id="subcategory" name="subcategory">
+        <option value="">-- Select Type --</option>
+      </select>
+
+      <label for="fabric">Choose Fabric</label>
+      <select id="fabric" name="fabric">
+        <option>Cotton</option>
+        <option>Silk</option>
+        <option>Linen</option>
+        <option>Georgette</option>
+        <option>Denim</option>
+      </select>
+      <label for="preferredColor">Preferred Color</label>
+      <input type="color" id="preferredColor" name="preferredColor" value="#000000">
+      
+      <label for="styleUpload">Upload Your Style Image</label>
+      <input type="file" id="styleUpload" accept="image/*" />
+
+      <div class="preview" id="imagePreview"></div>
+
+      <label for="additional">Additional Details (Optional)</label>
+      <textarea id="additional" name="additional" rows="5" placeholder="Mention neck type, sleeve length, embroidery preferences, etc..."></textarea>
+
+      <button type="submit">Save Customization</button>
+    </form>
+  </div>
+
+  <!-- Add notification element -->
+  <div class="notification" id="notification">
+    <div>Your customization has been saved successfully!</div>
+    <div>Your Order Number: <span class="order-number" id="orderNumber"></span></div>
+    <div>Redirecting to measurement page...</div>
+  </div>
+
+  <script>
+    const subcategories = {
+      Kurti: ["Straight", "A-line", "Anarkali", "Long", "Short", "Slit"],
+      Lehenga: ["Flared", "Mermaid", "Panelled", "Sharara"],
+      Pants: ["Palazzo", "Cigarette", "Dhoti", "Sharara Pants"],
+      Skirt: ["Mini", "Midi", "Maxi", "Wrap"],
+      Shirt: ["Formal", "Casual", "Mandarin Collar", "Ruffle"],
+      Blouse: ["Backless", "Boat Neck", "Puff Sleeve", "Off-Shoulder"]
+    };
+
+    function updateSubcategories() {
+      const category = document.getElementById("category").value;
+      const subcategory = document.getElementById("subcategory");
+      subcategory.innerHTML = "<option>-- Select Type --</option>";
+
+      if (subcategories[category]) {
+        subcategories[category].forEach(type => {
+          const option = document.createElement("option");
+          option.value = type;
+          option.textContent = type;
+          subcategory.appendChild(option);
+        });
+      }
+    }
+
+    const styleUpload = document.getElementById('styleUpload');
+    const imagePreview = document.getElementById('imagePreview');
+
+    styleUpload.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Style" />`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Handle form submission
+    document.getElementById('customForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Get form values
+        const category = document.getElementById('category').value;
+        const subcategory = document.getElementById('subcategory').value;
+        const fabric = document.getElementById('fabric').value;
+        const preferredColor = document.getElementById('preferredColor').value;
+        const additional = document.getElementById('additional').value;
+
+        // Generate order number
+        const orderNumber = 'ORD-' + Date.now();
+
+        // Check if user is logged in
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const userId = localStorage.getItem('userId');
+
+        console.log('User login status:', { isLoggedIn, userId });
+        console.log('Form values:', { category, subcategory, fabric, preferredColor, additional });
+
+        if (!isLoggedIn || !userId) {
+            window.location.href = 'login.html?redirect=customize.html';
+            return;
+        }
+
+        try {
+            // Prepare order data
+            const orderData = {
+                orderNumber,
+                userId: parseInt(userId), // Ensure userId is a number
+                category,
+                subcategory,
+                fabric,
+                preferredColor,
+                additional
+            };
+
+            console.log('Sending order data:', orderData);
+
+            // Send order to server
+            const response = await fetch('/api/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            console.log('Server response status:', response.status);
+            const data = await response.json();
+            console.log('Server response data:', data);
+
+            if (response.ok) {
+                // Show success message
+                const notification = document.getElementById('notification');
+                document.getElementById('orderNumber').textContent = orderNumber;
+                notification.style.display = 'block';
+                notification.style.backgroundColor = '#4CAF50';
+
+                // Redirect to measurement page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = `mm.html?order=${orderNumber}`;
+                }, 2000);
+            } else {
+                throw new Error(data.message || 'Failed to save order');
+            }
+        } catch (error) {
+            console.error('Error saving order:', error);
+            const notification = document.getElementById('notification');
+            notification.textContent = error.message || 'Failed to save order. Please try again.';
+            notification.style.display = 'block';
+            notification.style.backgroundColor = '#f44336';
+        }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Measurements | Stitch-It-Up</title>
+  <link rel="stylesheet" href="styles/shared.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #d0e7ff, #e3f0ff, #f0f8ff);
+      color: #1f3b57;
+      height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      animation: twinkle 3s infinite ease-in-out alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.2; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1.2); }
+    }
+
+    nav, .hero {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 120px;
+      font-size: 2.5rem;
+      color: #0077b6;
+      position: relative;
+      z-index: 1;
+      padding: 10px 0;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.25);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+      backdrop-filter: blur(12px);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+      color: #003366;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.5);
+      font-size: 1rem;
+      color: #003366;
+    }
+
+    input::placeholder {
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background 0.3s ease;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #005999;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+        margin-top: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars" id="stars"></div>
+
+  <nav>
+    <div class="logo">Stitch-It-Up</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="customize.html">Customize</a>
+      <a href="mm.html">Measurement</a>
+      <a href="track.html">Track Order</a>
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="userProfile.html" id="profileLink" style="display: none;">My Profile</a>
+      <a href="admin.html" id="adminLink" style="display: none;">Admin Dashboard</a>
+      <a href="#" id="logoutLink" style="display: none;">Logout</a>
+    </div>
+  </nav>
+
+  <h1>Measurements</h1>
+
+  <main>
+    <form id="measurement-form">
+      <label for="clothing-type">Select Clothing Type:</label>
+      <select id="clothing-type" name="clothing-type" required onchange="updateFields()">
+        <option value="">-- Select --</option>
+        <option value="shirt">Shirt</option>
+        <option value="skirtlehenga">Skirt/ Lehenga</option>
+        <option value="blouse">Blouse</option>
+        <option value="pants">Pants</option>
+        <option value="Kurti">Kurti</option>
+      </select>
+
+      <div id="measurement-fields"></div>
+
+      <button type="submit">Submit</button>
+    </form>
+  </main>
+
+  <script>
+    // Create stars
+    const starContainer = document.getElementById('stars');
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.top = `${Math.random() * 100}vh`;
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.animationDelay = `${Math.random() * 5}s`;
+      starContainer.appendChild(star);
+    }
+
+    const measurementSets = {
+      shirt: ['Height', 'Chest', 'Waist', 'Sleeve Length'],
+      skirtlehenga: ['Waist', 'Hips', 'Skirt Length'],
+      blouse: ['Bust', 'Waist', 'Shoulder Width', 'Sleeve Length'],
+      pants: ['Waist', 'Hips', 'Inseam Length', 'Outseam Length'],
+      Kurti: ['Bust', 'Waist', 'Hips', 'Dress Length']
+    };
+
+    function updateFields() {
+      const type = document.getElementById('clothing-type').value;
+      const container = document.getElementById('measurement-fields');
+      container.innerHTML = '';
+      if (measurementSets[type]) {
+        measurementSets[type].forEach(measure => {
+          const label = document.createElement('label');
+          label.setAttribute('for', measure.toLowerCase());
+          label.textContent = `${measure} (cm):`;
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.id = measure.toLowerCase();
+          input.name = measure.toLowerCase();
+          input.placeholder = `Enter ${measure.toLowerCase()}`;
+          input.required = true;
+          container.appendChild(label);
+          container.appendChild(input);
+        });
+      }
+    }
+
+    document.getElementById("measurement-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const clothing = document.getElementById("clothing-type").value;
+      const inputs = document.querySelectorAll("#measurement-fields input");
+      
+      // Get order number from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderNumber = urlParams.get('order');
+      
+      // Create measurements object
+      const measurements = {};
+      inputs.forEach(input => {
+        measurements[input.name] = input.value;
+      });
+      
+      try {
+        // Save measurements to database
+        const response = await fetch(`/api/orders/${orderNumber}/measurements`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ measurements })
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to save measurements');
+        }
+
+        // Redirect to payment page
+        window.location.href = `pay1.html?order=${orderNumber}`;
+      } catch (error) {
+        console.error('Error saving measurements:', error);
+        alert('Failed to save measurements. Please try again.');
+      }
+    });
+
+    // Check login status and update navigation
+    function updateNavigation() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      const profileLink = document.getElementById('profileLink');
+      const adminLink = document.getElementById('adminLink');
+      const loginLink = document.getElementById('loginLink');
+      const logoutLink = document.getElementById('logoutLink');
+
+      if (isLoggedIn) {
+        profileLink.style.display = 'block';
+        if (isAdmin) {
+          adminLink.style.display = 'block';
+        }
+        loginLink.style.display = 'none';
+        logoutLink.style.display = 'block';
+      } else {
+        profileLink.style.display = 'none';
+        adminLink.style.display = 'none';
+        loginLink.style.display = 'block';
+        logoutLink.style.display = 'none';
+      }
+    }
+
+    // Handle logout
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    // Initialize navigation
+    updateNavigation();
+  </script>
+
+</body>
+</html>
