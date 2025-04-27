@@ -33,4 +33,10 @@ It allows customers to easily place stitching orders and enables tailors to mana
 ---
 
 ## 🚀 Installation & Setup
-1. Clone the repository:
+1. Clone the repository:https://github.com/Prachi422104/Stitch-it-up
+2. Install dependencies: npm install
+3. Start the server: npm start
+4. Open the app in your browser and start placing orders!
+
+---
+
