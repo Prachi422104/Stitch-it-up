@@ -1,0 +1,21 @@
+{
+  "users": [
+    {
+      "id": "1744630447275",
+      "fullName": "prachi",
+      "email": "prachistalmale@gmail.com",
+      "mobile": "8308993677",
+      "password": "$2b$10$5Ht6DlQCNmLVNYSa3spGguitwWKTSf.0UTPwsvvcBYXqfXTT6AQNa",
+      "createdAt": "2025-04-14T11:34:07.275Z"
+    },
+    {
+      "id": "1744630488277",
+      "fullName": "sam",
+      "email": "samruddhikapadnis02@gmail.com",
+      "mobile": "7507508262",
+      "password": "$2b$10$ZYOoMEDrgXxH7AGKjdNn9uc0od25CgRLX.vHXB1gj5huBtrXuslGW",
+      "createdAt": "2025-04-14T11:34:48.277Z"
+    }
+  ],
+  "orders": []
+}
