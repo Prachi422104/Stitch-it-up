@@ -1,9 +1,9 @@
-# Stitch-it-up
-A web application for managing stitching orders for tailoring businesses.
+
 # Stitch It Up ✨🧵
 
 **Stitch It Up** is a beautiful web application designed for tailoring services.  
 It allows customers to easily place stitching orders and enables tailors to manage them seamlessly.
+A web application for managing stitching orders for tailoring businesses.
 
 ---
 
